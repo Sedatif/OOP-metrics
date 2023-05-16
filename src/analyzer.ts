@@ -22,7 +22,6 @@ const PRIVATE_MODIFIERS = [
 class MoodMetric {
 	public divided: number = 0;
 	public divider: number = 0;
-
 	calculate(): number {
 		return this.divided / this.divider;
 	}
@@ -40,9 +39,7 @@ class ClassMetrics {
 
 class Analyzer {
 	classes: ClassMetrics[] = [];
-
 	constructor(public typeChecker: ts.TypeChecker) {}
-
 	analyze(nodes: ts.Node[]) {
 		const self = this;
 		nodes.forEach(node => this.analyzeClass(self, node));
@@ -62,10 +59,9 @@ class Analyzer {
 			mhf.divider += totalMethods;
 			ahf.divided += oneClass.attributes.privateCount;
 			ahf.divider += totalAttrs;
-			pof.divided += oneClass.methods.inherited.length + oneClass.methods.overridden.length;
+			pof.divided += oneClass.methods.inherited.length;
 			pof.divider += oneClass.methods.own.length * oneClass.numberOfChildren;
 		}
-
 		return {
 			classes: this.classes,
 			mif: mif.calculate(),
@@ -81,7 +77,6 @@ class Analyzer {
 			const classType = this.typeChecker.getTypeAtLocation(potentialClass);
 			this.getClassMetrics(classType);
 		}
-
 		potentialClass.forEachChild((node) => this.analyzeClass(self, node));
 	}
 
